@@ -1,0 +1,12 @@
+{
+  "name": "biblioteca-da-fofura",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Biblioteca digital pessoal para guardar livros lidos e livros que você quer ler 💗",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

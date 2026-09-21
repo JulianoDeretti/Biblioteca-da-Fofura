@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>💗 Biblioteca da Fofura 📚</title>
+
+    <!-- PWA: permite "Adicionar à tela inicial" no celular -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e85d8a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Fofura">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="icon" href="icons/favicon.ico">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <h1>💗 Biblioteca da Fofura 📚</h1>
+            <p class="tagline">Um cantinho para guardar todas as histórias que já fizeram parte da sua vida. ✨</p>
+
+            <div class="barra-busca">
+                <span class="icone-busca">🔍</span>
+                <input type="text" id="busca-global" placeholder="Pesquisar livros ou autores...">
+            </div>
+        </div>
+    </header>
+
+    <nav class="navegacao">
+        <button class="nav-item ativo" data-secao="inicio">🏠 Início</button>
+        <button class="nav-item" data-secao="lidos">❤️ Lidos</button>
+        <button class="nav-item" data-secao="lendo">📖 Lendo</button>
+        <button class="nav-item" data-secao="quero-ler">📚 Quero Ler</button>
+        <button class="nav-item" data-secao="colecao">💕 Coleção</button>
+        <button class="nav-item" data-secao="autores">✍️ Autores</button>
+        <button class="nav-item" data-secao="estatisticas">📊 Estatísticas</button>
+        <button id="btn-abrir-adicionar" class="btn-adicionar-flutuante">➕ Adicionar Livro</button>
+    </nav>
+
+    <main id="app">
+
+        <!-- ═══════════ INÍCIO ═══════════ -->
+        <section id="secao-inicio" class="secao">
+            <div class="painel-estatisticas" id="painel-inicio-stats"></div>
+
+            <div class="bloco-continuando" id="bloco-continuando" style="display:none;">
+                <h2>📖 Continue sua leitura</h2>
+                <div class="grade-livros" id="grade-continuando"></div>
+            </div>
+
+            <h2>✨ Adicionados recentemente</h2>
+            <div class="grade-livros" id="grade-recentes"></div>
+        </section>
+
+        <!-- ═══════════ LIDOS ═══════════ -->
+        <section id="secao-lidos" class="secao oculta">
+            <h2>❤️ Livros que já li</h2>
+            <div class="grade-livros" id="grade-lidos"></div>
+        </section>
+
+        <!-- ═══════════ LENDO ═══════════ -->
+        <section id="secao-lendo" class="secao oculta">
+            <h2>📖 Lendo agora</h2>
+            <div class="grade-livros" id="grade-lendo"></div>
+        </section>
+
+        <!-- ═══════════ QUERO LER ═══════════ -->
+        <section id="secao-quero-ler" class="secao oculta">
+            <h2>📚 Quero ler</h2>
+            <div class="grade-livros" id="grade-quero-ler"></div>
+        </section>
+
+        <!-- ═══════════ COLEÇÃO (ESTANTE) ═══════════ -->
+        <section id="secao-colecao" class="secao oculta">
+            <h2>💕 Minha Coleção</h2>
+
+            <div class="filtros-colecao">
+                <div class="campo-filtro">
+                    <label for="filtro-status">Status</label>
+                    <select id="filtro-status">
+                        <option value="todos">Todos</option>
+                        <option value="lido">Lidos</option>
+                        <option value="lendo">Lendo</option>
+                        <option value="quero-ler">Quero Ler</option>
+                    </select>
+                </div>
+                <div class="campo-filtro">
+                    <label for="filtro-genero">Gênero</label>
+                    <select id="filtro-genero">
+                        <option value="todos">Todos</option>
+                    </select>
+                </div>
+                <div class="campo-filtro">
+                    <label for="filtro-favorito">
+                        <input type="checkbox" id="filtro-favorito"> Só favoritos ⭐
+                    </label>
+                </div>
+                <div class="campo-filtro">
+                    <label for="ordenar-por">Ordenar por</label>
+                    <select id="ordenar-por">
+                        <option value="dataAdicao">Adicionado recentemente</option>
+                        <option value="titulo">Título</option>
+                        <option value="autor">Autor</option>
+                        <option value="nota">Nota</option>
+                        <option value="genero">Gênero</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="estante" id="estante-colecao"></div>
+        </section>
+
+        <!-- ═══════════ AUTORES ═══════════ -->
+        <section id="secao-autores" class="secao oculta">
+            <h2>✍️ Autores</h2>
+            <div id="lista-autores" class="grade-autores"></div>
+
+            <div id="detalhe-autor" class="oculto">
+                <button class="btn-voltar" id="btn-voltar-autores">← Voltar para autores</button>
+                <h3 id="titulo-autor"></h3>
+                <div class="grade-livros" id="grade-livros-autor"></div>
+            </div>
+        </section>
+
+        <!-- ═══════════ ESTATÍSTICAS ═══════════ -->
+        <section id="secao-estatisticas" class="secao oculta">
+            <h2>📊 Estatísticas da Biblioteca</h2>
+            <div class="painel-estatisticas" id="painel-estatisticas-completo"></div>
+        </section>
+
+        <!-- ═══════════ RESULTADOS DE BUSCA ═══════════ -->
+        <section id="secao-busca" class="secao oculta">
+            <h2>🔍 Resultados da pesquisa</h2>
+            <div class="grade-livros" id="grade-busca"></div>
+        </section>
+
+    </main>
+
+    <!-- ═══════════ MODAL: ADICIONAR/EDITAR LIVRO ═══════════ -->
+    <div id="modal-form" class="modal-fundo oculto">
+        <div class="modal-caixa">
+            <button class="modal-fechar" data-fechar="modal-form">✕</button>
+            <h3 id="titulo-modal-form">➕ Adicionar Livro</h3>
+
+            <form id="form-livro">
+                <input type="hidden" id="livro-id">
+
+                <div class="grade-formulario">
+                    <div class="campo-formulario">
+                        <label for="campo-titulo">Título *</label>
+                        <input type="text" id="campo-titulo" required maxlength="250">
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="campo-autor">Autor *</label>
+                        <input type="text" id="campo-autor" required maxlength="150" list="lista-autores-sugestao">
+                        <datalist id="lista-autores-sugestao"></datalist>
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="campo-genero">Gênero</label>
+                        <input type="text" id="campo-genero" maxlength="60" list="lista-generos-sugestao">
+                        <datalist id="lista-generos-sugestao"></datalist>
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="campo-status">Status</label>
+                        <select id="campo-status">
+                            <option value="quero-ler">📚 Quero Ler</option>
+                            <option value="lendo">📖 Lendo</option>
+                            <option value="lido">❤️ Lido</option>
+                        </select>
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="campo-data-leitura">Data de leitura</label>
+                        <input type="date" id="campo-data-leitura">
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="campo-paginas">Número de páginas</label>
+                        <input type="number" id="campo-paginas" min="0">
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="campo-editora">Editora</label>
+                        <input type="text" id="campo-editora" maxlength="150">
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="campo-isbn">ISBN</label>
+                        <input type="text" id="campo-isbn" placeholder="Somente números">
+                    </div>
+                    <div class="campo-formulario">
+                        <label for="campo-nota">Nota (0 a 5) ⭐</label>
+                        <input type="number" id="campo-nota" min="0" max="5" step="0.5">
+                    </div>
+                    <div class="campo-formulario campo-checkbox">
+                        <label for="campo-favorito">
+                            <input type="checkbox" id="campo-favorito"> ❤️ Marcar como favorito
+                        </label>
+                    </div>
+                    <div class="campo-formulario campo-largo">
+                        <label for="campo-capa">URL da capa</label>
+                        <input type="text" id="campo-capa" placeholder="https://...">
+                    </div>
+                    <div class="campo-formulario campo-largo">
+                        <label for="campo-sinopse">Sinopse</label>
+                        <textarea id="campo-sinopse" maxlength="2000" rows="3"></textarea>
+                    </div>
+                    <div class="campo-formulario campo-largo">
+                        <label for="campo-observacoes">Observações pessoais</label>
+                        <textarea id="campo-observacoes" maxlength="2000" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="acoes-modal">
+                    <button type="button" class="botao secundario" data-fechar="modal-form">Cancelar</button>
+                    <button type="submit" class="botao primario">💗 Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══════════ MODAL: DETALHES DO LIVRO ═══════════ -->
+    <div id="modal-detalhe" class="modal-fundo oculto">
+        <div class="modal-caixa" id="conteudo-detalhe-livro"></div>
+    </div>
+
+    <!-- ═══════════ MODAL: CONFIRMAÇÃO ═══════════ -->
+    <div id="modal-confirmar" class="modal-fundo oculto">
+        <div class="modal-caixa modal-pequena">
+            <p id="texto-confirmar">Tem certeza?</p>
+            <div class="acoes-modal">
+                <button type="button" class="botao secundario" id="btn-cancelar-confirmar">Cancelar</button>
+                <button type="button" class="botao perigo" id="btn-confirmar-confirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <footer class="rodape">
+        <p>Biblioteca da Fofura 💗 — cada livro guarda uma história.</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // Registra o service worker (permite instalar como app e abrir mais rápido).
+        // Livros continuam sempre vindo do servidor — o service worker nunca
+        // esconde nem atrasa os dados da API, só acelera o carregamento visual.
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').catch(() => {
+                    // Se falhar (ex.: aberto via file:// em vez de http://),
+                    // o app continua funcionando normalmente, só sem instalar.
+                });
+            });
+        }
+    </script>
+</body>
+</html>
